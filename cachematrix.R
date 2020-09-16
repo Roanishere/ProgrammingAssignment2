@@ -1,15 +1,34 @@
 ## Put comments here that give an overall description of what your
 ## functions do
 
-## Write a short comment describing this function
+## First halve creates empty variables to fill later
 
 makeCacheMatrix <- function(x = matrix()) {
-
+  inv <- NULL
+  set <- function(y) {
+    x <<- y
+    inv <<- NULL
+  }
+  
+  get <- function() x
+  setinversion <- function(inverse) inv <<- inverse
+  getinversion <- function() inv
+  list (set = set, get = get, setinversion = setinversion, getinversion = getinversion)
+    
 }
 
 
-## Write a short comment describing this function
+## This function looks whether a calculation has already been made in the cache, if so, it retrieves it, if not, it calculates it.
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+  inv <- x$getinversion()
+  if (!is.null(inv)) {
+    message("Getting cached data")
+    return(inv)
+  }
+  data <- x$get()
+  inv <- solve(data, ...)
+  x$getinversion(inv)
+  
+  inv
 }
